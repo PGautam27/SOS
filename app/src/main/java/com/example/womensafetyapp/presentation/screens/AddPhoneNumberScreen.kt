@@ -2,10 +2,7 @@ package com.example.womensafetyapp.presentation.screens
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,11 +13,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -32,8 +27,9 @@ import androidx.navigation.NavController
 import com.example.womensafetyapp.presentation.Screen
 import com.example.womensafetyapp.presentation.screens.components.Template
 import com.example.womensafetyapp.presentation.viewModel.LoginScreenViewModel
-import com.example.womensafetyapp.ui.theme.Orange
-import com.example.womensafetyapp.ui.theme.Yellow
+import com.example.womensafetyapp.ui.theme.DarkBlue
+import com.example.womensafetyapp.ui.theme.OrangishYellow
+import com.example.womensafetyapp.ui.theme.Red
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -64,7 +60,7 @@ fun AddPhoneNumberScreen(navController: NavController, viewModel: LoginScreenVie
                     AnnotatedString(
                         text = " Close Ones",
                         spanStyle = SpanStyle(
-                            color = Orange,
+                            color = Red,
                             fontSize = LocalConfiguration.current.fontScale.times(30).sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -81,8 +77,8 @@ fun AddPhoneNumberScreen(navController: NavController, viewModel: LoginScreenVie
             Button(
                 onClick = onClick,
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Orange,
-                    contentColor = Yellow
+                    backgroundColor = DarkBlue,
+                    contentColor = OrangishYellow
                 ),
                 modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
             ) {
@@ -91,8 +87,8 @@ fun AddPhoneNumberScreen(navController: NavController, viewModel: LoginScreenVie
             Button(
                 onClick = {navController.navigate(Screen.SignInScreen.route)},
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Orange,
-                    contentColor = Yellow
+                    backgroundColor = DarkBlue,
+                    contentColor = OrangishYellow
                 ),
                 modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
             ) {
@@ -114,12 +110,12 @@ fun AddPhoneNumberScreen(navController: NavController, viewModel: LoginScreenVie
                     modifier = Modifier
                         .width(LocalConfiguration.current.screenWidthDp.dp - 60.dp)
                         .height(LocalConfiguration.current.screenHeightDp.dp / 10)
-                        .border(width = 3.dp, color = Orange, shape = RoundedCornerShape(20.dp)),
+                        .border(width = 3.dp, color = DarkBlue, shape = RoundedCornerShape(20.dp)),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = it.name, fontSize = LocalConfiguration.current.fontScale.times(18).sp, color = Orange, fontWeight = FontWeight.Bold)
-                    Text(text = it.number, fontSize = LocalConfiguration.current.fontScale.times(18).sp, color = Orange, fontWeight = FontWeight.Bold)
+                    Text(text = it.name, fontSize = LocalConfiguration.current.fontScale.times(18).sp, color = DarkBlue, fontWeight = FontWeight.Bold)
+                    Text(text = it.number, fontSize = LocalConfiguration.current.fontScale.times(18).sp, color = DarkBlue, fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.padding(5.dp))
             }

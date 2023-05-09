@@ -2,7 +2,6 @@ package com.example.womensafetyapp.presentation.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -35,14 +34,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.times
 import androidx.navigation.NavController
 import com.example.womensafetyapp.R
 import com.example.womensafetyapp.presentation.Screen
 import com.example.womensafetyapp.presentation.screens.components.Template
-import com.example.womensafetyapp.ui.theme.Orange
-import com.example.womensafetyapp.ui.theme.Shapes
-import com.example.womensafetyapp.ui.theme.Yellow
+import com.example.womensafetyapp.ui.theme.DarkBlue
+import com.example.womensafetyapp.ui.theme.OrangishYellow
+import com.example.womensafetyapp.ui.theme.Red
 import kotlinx.coroutines.launch
 
 
@@ -79,7 +77,7 @@ fun SignUp(navController: NavController) {
                 AnnotatedString(
                     text = "Signed UP",
                     spanStyle = SpanStyle(
-                        color = Orange,
+                        color = Red,
                         fontSize = LocalConfiguration.current.fontScale.times(30).sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -105,10 +103,10 @@ fun SignUp(navController: NavController) {
                     keyboardController?.hide()
                 }
             ),colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Orange,
-                unfocusedBorderColor = Orange,
-                unfocusedLabelColor = Orange,
-                focusedLabelColor = Orange
+                focusedBorderColor = DarkBlue,
+                unfocusedBorderColor = DarkBlue,
+                unfocusedLabelColor = DarkBlue,
+                focusedLabelColor = DarkBlue
             ),
             maxLines = 1)
 
@@ -130,10 +128,10 @@ fun SignUp(navController: NavController) {
                     }
                 },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Orange,
-                unfocusedBorderColor = Orange,
-                unfocusedLabelColor = Orange,
-                focusedLabelColor = Orange
+                focusedBorderColor = DarkBlue,
+                unfocusedBorderColor = DarkBlue,
+                unfocusedLabelColor = DarkBlue,
+                focusedLabelColor = DarkBlue
             ),
             maxLines = 1,
             visualTransformation = if (passVisualValue.value) PasswordVisualTransformation() else VisualTransformation.None,
@@ -162,8 +160,8 @@ fun SignUp(navController: NavController) {
         Button(
             onClick = {navController.navigate(Screen.AddPhoneNumbers.route)},
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Orange,
-                contentColor = Yellow
+                backgroundColor = DarkBlue,
+                contentColor = OrangishYellow
             ),
             modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
         ) {

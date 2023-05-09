@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.womensafetyapp.ui.theme.Yellow
+import com.example.womensafetyapp.ui.theme.OrangishYellow
 
 @Composable
 fun Template(content: @Composable ColumnScope.() -> Unit) {
@@ -16,5 +16,5 @@ fun Template(content: @Composable ColumnScope.() -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Yellow), content = content)
+            .background(color = OrangishYellow), content = content)
 }

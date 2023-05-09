@@ -1,5 +1,10 @@
 package com.example.womensafetyapp.presentation.screens
 
+import android.content.Intent
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -36,14 +41,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.womensafetyapp.R
+import com.example.womensafetyapp.presentation.HomeActivity
 import com.example.womensafetyapp.presentation.screens.components.Template
-import com.example.womensafetyapp.ui.theme.Orange
-import com.example.womensafetyapp.ui.theme.Yellow
+import com.example.womensafetyapp.ui.theme.DarkBlue
+import com.example.womensafetyapp.ui.theme.OrangishYellow
+import com.example.womensafetyapp.ui.theme.Red
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun SingIn(navController: NavController) {
+fun SingIn(navController: NavController, context: ComponentActivity,onClick : () -> Unit) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -58,7 +65,6 @@ fun SingIn(navController: NavController) {
     val passVisualValue = remember {
         mutableStateOf(true)
     }
-
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = BringIntoViewRequester()
 
@@ -74,7 +80,7 @@ fun SingIn(navController: NavController) {
                 AnnotatedString(
                     text = "SignIn",
                     spanStyle = SpanStyle(
-                        color = Orange,
+                        color = Red,
                         fontSize = LocalConfiguration.current.fontScale.times(30).sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -100,10 +106,10 @@ fun SingIn(navController: NavController) {
                     keyboardController?.hide()
                 }
             ),colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Orange,
-                unfocusedBorderColor = Orange,
-                unfocusedLabelColor = Orange,
-                focusedLabelColor = Orange
+                focusedBorderColor = DarkBlue,
+                unfocusedBorderColor = DarkBlue,
+                unfocusedLabelColor = DarkBlue,
+                focusedLabelColor = DarkBlue
             ),
             maxLines = 1)
 
@@ -125,10 +131,10 @@ fun SingIn(navController: NavController) {
                     }
                 },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Orange,
-                unfocusedBorderColor = Orange,
-                unfocusedLabelColor = Orange,
-                focusedLabelColor = Orange
+                focusedBorderColor = DarkBlue,
+                unfocusedBorderColor = DarkBlue,
+                unfocusedLabelColor = DarkBlue,
+                focusedLabelColor = DarkBlue
             ),
             maxLines = 1,
             visualTransformation = if (passVisualValue.value) PasswordVisualTransformation() else VisualTransformation.None,
@@ -155,10 +161,10 @@ fun SingIn(navController: NavController) {
         Spacer(modifier = Modifier.padding(20.dp))
 
         Button(
-            onClick = {},
+            onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Orange,
-                contentColor = Yellow
+                backgroundColor = DarkBlue,
+                contentColor = OrangishYellow
             ),
             modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
         ) {

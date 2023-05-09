@@ -27,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.womensafetyapp.domain.dto.Contact
 import com.example.womensafetyapp.modal.CurrentLocationGen
+import com.example.womensafetyapp.presentation.HomeActivity
 import com.example.womensafetyapp.presentation.Screen
 import com.example.womensafetyapp.presentation.screens.AddPhoneNumberScreen
 import com.example.womensafetyapp.presentation.screens.HomeScreen
@@ -80,7 +81,7 @@ class MainActivity : ComponentActivity() {
                         HomeScreen(navController)
                     }
                     composable(Screen.SignInScreen.route){
-                        SingIn(navController = navController)
+                        SingIn(navController = navController, this@MainActivity,onClick = {goToHomeActivity()})
                     }
                     composable(Screen.SignUpScreen.route){
                         SignUp(navController = navController)
@@ -91,6 +92,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun goToHomeActivity(){
+        val intent = Intent(this,HomeActivity::class.java)
+        startActivity(intent)
     }
 
     private fun checkContacts(){
