@@ -25,15 +25,16 @@ import com.example.womensafetyapp.presentation.Screen
 import com.example.womensafetyapp.presentation.screens.components.Template
 import com.example.womensafetyapp.presentation.ui.theme.DarkBlue
 import com.example.womensafetyapp.presentation.ui.theme.OrangishYellow
+import com.example.womensafetyapp.ui.theme.Red
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
 @Composable
 fun DashBoardScreen(navController: NavController) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
         Scaffold(
-            scaffoldState = rememberScaffoldState(),
+            scaffoldState = scaffoldState,
             topBar = {
                 TopAppBar(
                     modifier = Modifier
@@ -56,7 +57,6 @@ fun DashBoardScreen(navController: NavController) {
                     }
                 }
             },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
             drawerContent = {
                 DrawerBody(navController)
             }){
@@ -71,7 +71,8 @@ fun DashBoardScreen(navController: NavController) {
                         .width(LocalConfiguration.current.screenWidthDp.dp / 2)
                         .height(
                             LocalConfiguration.current.screenHeightDp.dp / 8
-                        ).clip(RoundedCornerShape(20.dp))
+                        )
+                        .clip(RoundedCornerShape(20.dp))
                 ) {
                     Text(text = "SAVE ME", style = TextStyle(fontWeight = FontWeight.Bold))
                 }
@@ -93,37 +94,57 @@ fun DrawerBody(navController: NavController) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.padding(vertical = 80.dp))
-        Button(onClick = {
-            state.value = true
-        }) {
-            Text(text = "Log Out")
+        Spacer(modifier = Modifier.padding(vertical = 60.dp))
+        Button(
+            onClick = {
+            },
+            modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp / 2),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = OrangishYellow
+            )
+        ) {
+            Text(text = "Add Contacts", color = DarkBlue, fontWeight = FontWeight.Bold)
         }
+        Spacer(modifier = Modifier.padding(20.dp))
+        Button(
+            onClick = {
+                state.value = true
+            },
+            modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp / 2),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = OrangishYellow
+            )
+        ) {
+            Text(text = "Log Out", color = DarkBlue, fontWeight = FontWeight.Bold)
+        }
+
+
     }
 }
 
 @Composable
 fun LogOut(navController: NavController){
     AlertDialog(onDismissRequest = { /*TODO*/ },
+        backgroundColor = OrangishYellow,
         title = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "LOG OUT", fontSize = 30.sp)
+                Text(text = "LOG OUT", fontSize = 30.sp, color = Red, fontWeight = FontWeight.Bold)
             }
         },
         text = {
-            Text(text = "Do you wanna Log Out")
+            Text(text = "Do you wanna Log Out ?", fontWeight = FontWeight.Bold, color = DarkBlue)
         },
         dismissButton = {
-            Button(onClick = { }) {
-                Text(text = "Log Out")
+            Button(onClick = { navController.navigate(Screen.HomeScreen.route) }) {
+                Text(text = "Log Out", color = OrangishYellow)
             }
         }, confirmButton = {
-            Button(onClick = {  }) {
-                Text(text = " Cancel")
+            Button(onClick = { navController.navigate(Screen.DashBoardScreen.route) }) {
+                Text(text = " Cancel", color = OrangishYellow)
             }
         })
 }
