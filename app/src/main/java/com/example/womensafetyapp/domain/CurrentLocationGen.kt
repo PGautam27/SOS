@@ -1,4 +1,4 @@
-package com.example.womensafetyapp.modal
+package com.example.womensafetyapp.domain
 
 import android.Manifest
 import android.annotation.SuppressLint

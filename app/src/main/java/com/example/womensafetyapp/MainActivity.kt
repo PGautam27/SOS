@@ -2,22 +2,13 @@ package com.example.womensafetyapp
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -25,8 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.womensafetyapp.domain.dto.Contact
-import com.example.womensafetyapp.modal.CurrentLocationGen
+import com.example.womensafetyapp.data.dto.Contact
 import com.example.womensafetyapp.presentation.HomeActivity
 import com.example.womensafetyapp.presentation.Screen
 import com.example.womensafetyapp.presentation.screens.AddPhoneNumberScreen
@@ -46,33 +36,18 @@ class MainActivity : ComponentActivity() {
         const val PICK_CONTACTS_REQUEST_CODE = 1
     }
     private lateinit var loginViewModel : LoginScreenViewModel
-    private lateinit var locationManager: LocationManager
-    private lateinit var currentLocationGen: CurrentLocationGen
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Request location permission
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        currentLocationGen = CurrentLocationGen(locationManager,this)
+
 
         lifecycleScope.launchWhenCreated { checkContacts() }
         loginViewModel = ViewModelProvider(this,LoginViewModelFactory(application))[LoginScreenViewModel::class.java]
 
         setContent {
             WomenSafetyAppTheme {
-                // A surface container using the 'background' color from the theme
-//                Column(
-//                    modifier = Modifier.fillMaxSize(),
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    verticalArrangement = Arrangement.Center
-//                ) {
-//                    Button(onClick = {
-//                        currentLocationGen.checkLocation()
-//                    }) {
-//                        Text(text = "Click me")
-//                    }
-//                }
                 
                 val navController = rememberNavController();
                 NavHost(navController = navController, startDestination = Screen.HomeScreen.route ){

@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
 @Composable
-fun DashBoardScreen(navController: NavController) {
+fun DashBoardScreen(navController: NavController,onClick : () -> Unit) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
         Scaffold(
@@ -62,7 +62,7 @@ fun DashBoardScreen(navController: NavController) {
             }){
             Template {
                 Button(
-                    onClick = { },
+                    onClick = onClick,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = DarkBlue,
                         contentColor = OrangishYellow
