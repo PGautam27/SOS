@@ -27,6 +27,7 @@ import com.example.womensafetyapp.presentation.screens.SingIn
 import com.example.womensafetyapp.presentation.viewModel.LoginScreenViewModel
 import com.example.womensafetyapp.presentation.viewModel.LoginViewModelFactory
 import com.example.womensafetyapp.ui.theme.WomenSafetyAppTheme
+import kotlin.math.log
 
 class MainActivity : ComponentActivity() {
 
@@ -114,8 +115,15 @@ class MainActivity : ComponentActivity() {
             var cursor = contentResolver.query(contacturi,cols,null,null,null)
             if (cursor?.moveToFirst()!!){
                 Log.d("Contact add",cursor.getString(1)+cursor.getString(0))
-                val contact = Contact(cursor.getString(1),cursor.getString(0))
-                loginViewModel.addPhoneNumber(contact)
+                if(cursor.getString(0).contains("+91")){
+                    val number = cursor.getString(0).removeRange(0,3)
+                    val contact = Contact(cursor.getString(1),number)
+                    loginViewModel.addPhoneNumber(contact)
+                }
+                else{
+                    val contact = Contact(cursor.getString(1),cursor.getString(0))
+                    loginViewModel.addPhoneNumber(contact)
+                }
             }
         }
     }
