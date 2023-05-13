@@ -13,7 +13,7 @@ object ApiClient {
 
     fun getApiService(application: Application):ApiService{
         val retrofit = Retrofit.Builder()
-            .baseUrl(Constant.TESTBASEURL)
+            .baseUrl(Constant.PRODUCTIONBASEURL)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).build())
             .build()
