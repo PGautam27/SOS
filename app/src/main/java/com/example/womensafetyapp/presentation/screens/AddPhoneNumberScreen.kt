@@ -37,10 +37,10 @@ import kotlinx.coroutines.launch
 fun AddPhoneNumberScreen(navController: NavController, viewModel: LoginScreenViewModel,onClick: () -> Unit) {
 
     val phoneNumbers by viewModel._phoneNumbers.observeAsState()
+    val addPhoneDone by viewModel._addPhoneDone.observeAsState()
 
     val scope = rememberCoroutineScope()
     scope.launch {
-        Log.d("Ok","IT works")
         phoneNumbers?.forEach {
             Log.d("Contact Name",it.name)
         }
@@ -74,25 +74,39 @@ fun AddPhoneNumberScreen(navController: NavController, viewModel: LoginScreenVie
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(
-                onClick = onClick,
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = DarkBlue,
-                    contentColor = OrangishYellow
-                ),
-                modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
-            ) {
-                Text(text = "ADD NUMBER", style = TextStyle(fontWeight = FontWeight.Bold))
+            if (!addPhoneDone!!){
+                Button(
+                    onClick = onClick,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = DarkBlue,
+                        contentColor = OrangishYellow
+                    ),
+                    modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
+                ) {
+                    Text(text = "ADD NUMBER", style = TextStyle(fontWeight = FontWeight.Bold))
+                }
+                Button(
+                    onClick = {viewModel.sendPhoneNumber()},
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = DarkBlue,
+                        contentColor = OrangishYellow
+                    ),
+                    modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
+                ) {
+                    Text(text = "DONE")
+                }
             }
-            Button(
-                onClick = {navController.navigate(Screen.SignInScreen.route)},
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = DarkBlue,
-                    contentColor = OrangishYellow
-                ),
-                modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
-            ) {
-                Text(text = "DONE")
+            else{
+                Button(
+                    onClick = {navController.navigate(Screen.SignInScreen.route)},
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = DarkBlue,
+                        contentColor = OrangishYellow
+                    ),
+                    modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp - 100.dp)
+                ) {
+                    Text(text = "GO TO SIGN IN")
+                }
             }
         }
 
@@ -115,7 +129,7 @@ fun AddPhoneNumberScreen(navController: NavController, viewModel: LoginScreenVie
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(text = it.name, fontSize = LocalConfiguration.current.fontScale.times(18).sp, color = DarkBlue, fontWeight = FontWeight.Bold)
-                    Text(text = it.number, fontSize = LocalConfiguration.current.fontScale.times(18).sp, color = DarkBlue, fontWeight = FontWeight.Bold)
+                    Text(text = it.phone, fontSize = LocalConfiguration.current.fontScale.times(18).sp, color = DarkBlue, fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.padding(5.dp))
             }

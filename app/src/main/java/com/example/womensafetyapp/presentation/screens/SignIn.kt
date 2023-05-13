@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +44,7 @@ import androidx.navigation.NavController
 import com.example.womensafetyapp.R
 import com.example.womensafetyapp.presentation.HomeActivity
 import com.example.womensafetyapp.presentation.screens.components.Template
+import com.example.womensafetyapp.presentation.viewModel.LoginScreenViewModel
 import com.example.womensafetyapp.ui.theme.DarkBlue
 import com.example.womensafetyapp.ui.theme.OrangishYellow
 import com.example.womensafetyapp.ui.theme.Red
@@ -50,9 +52,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun SingIn(navController: NavController, context: ComponentActivity,onClick : () -> Unit) {
+fun SingIn(viewModel: LoginScreenViewModel, context: ComponentActivity,onClick : () -> Unit) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val loginResponse = viewModel._loginValue.observeAsState()
+    if (loginResponse.value!!){
+        onClick.invoke()
+    }
 
     val userName = remember {
         mutableStateOf(String())
@@ -95,11 +102,7 @@ fun SingIn(navController: NavController, context: ComponentActivity,onClick : ()
                 .width(
                     LocalConfiguration.current.screenWidthDp.dp - 80.dp
                 ),
-            label = { Text(text = "Mobile Number", fontWeight = FontWeight.Bold) },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Done
-            ),
+            label = { Text(text = "User Name", fontWeight = FontWeight.Bold) },
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
@@ -161,7 +164,9 @@ fun SingIn(navController: NavController, context: ComponentActivity,onClick : ()
         Spacer(modifier = Modifier.padding(20.dp))
 
         Button(
-            onClick = onClick,
+            onClick = {
+                      viewModel.login(userName = userName.value, password = passWord.value)
+            },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = DarkBlue,
                 contentColor = OrangishYellow

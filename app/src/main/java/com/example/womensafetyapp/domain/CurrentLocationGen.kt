@@ -12,13 +12,16 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.womensafetyapp.data.dto.NumberName
+import com.example.womensafetyapp.presentation.viewModel.HomeViewModel
 
-class CurrentLocationGen(locationManager: LocationManager,context: ComponentActivity) : LocationListener {
+class CurrentLocationGen(locationManager: LocationManager,context: ComponentActivity,homeViewModel: HomeViewModel) : LocationListener {
 
     private val REQUEST_LOCATION_PERMISSION = 1
     private val locationManager1: LocationManager = locationManager
     private val context = context
     private val PERMISSION_SEND_SMS = 1
+    private val viewModel = homeViewModel
 
     fun checkLocation(){
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -41,14 +44,15 @@ class CurrentLocationGen(locationManager: LocationManager,context: ComponentActi
             locationManager1.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (location != null) {
                 // Send the location as an SOS message
-                val message = "SOS! My current location is: https://www.google.com/maps?q=${location.latitude},${location.longitude}"
+                val message = "https://www.google.com/maps?q=${location.latitude},${location.longitude}"
                 // Check if the app has permission to send SMS
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
                     // Request permission
                     ActivityCompat.requestPermissions(context, arrayOf(Manifest.permission.SEND_SMS), PERMISSION_SEND_SMS)
                 } else {
                     // Permission already granted
-                    sendSms(message, "7022931717")
+                    val x : List<NumberName> = viewModel.contactResponse.value!!.numberNames
+                    sendSms(message, x)
                 }
             } else {
                 // Request location updates
@@ -57,10 +61,10 @@ class CurrentLocationGen(locationManager: LocationManager,context: ComponentActi
         }
     }
 
-    private fun sendSms(message: String, vararg phoneNumbers: String) {
+    private fun sendSms(message: String, phoneNumbers: List<NumberName>) {
         val smsManager = SmsManager.getDefault()
         for (phoneNumber in phoneNumbers) {
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+            smsManager.sendTextMessage(phoneNumber.phone, null, "Help me ${phoneNumber.name} I am in danger. This is my location. "+message, null, null)
         }
         Toast.makeText(context, "SOS message sent", Toast.LENGTH_SHORT).show()
     }
@@ -71,9 +75,9 @@ class CurrentLocationGen(locationManager: LocationManager,context: ComponentActi
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
     override fun onLocationChanged(p0: Location) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
 //                val message = "SOS! My current location is: https://www.google.com/maps?q=${location.latitude},${location.longitude}"
-        sendSms("message", "PHONE_NUMBER_1", "PHONE_NUMBER_2", "PHONE_NUMBER_3")
+//        sendSms("message", "PHONE_NUMBER_1", "PHONE_NUMBER_2", "PHONE_NUMBER_3")
 //         Stop location updates after sending the message
         locationManager1.removeUpdates(this)
     }

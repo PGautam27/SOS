@@ -1,5 +1,8 @@
 package com.example.womensafetyapp.presentation.screens
 
+import android.annotation.SuppressLint
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -13,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -38,15 +43,22 @@ import androidx.navigation.NavController
 import com.example.womensafetyapp.R
 import com.example.womensafetyapp.presentation.Screen
 import com.example.womensafetyapp.presentation.screens.components.Template
+import com.example.womensafetyapp.presentation.viewModel.LoginScreenViewModel
 import com.example.womensafetyapp.ui.theme.DarkBlue
 import com.example.womensafetyapp.ui.theme.OrangishYellow
 import com.example.womensafetyapp.ui.theme.Red
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun SignUp(navController: NavController) {
+fun SignUp(navController: NavController,viewModel: LoginScreenViewModel,onClick : ()->Unit) {
+
+    val context = LocalContext.current
+    val registerResponse = viewModel._registerResponse1.observeAsState()
+    val coroutineScope = rememberCoroutineScope()
+
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -62,7 +74,6 @@ fun SignUp(navController: NavController) {
         mutableStateOf(true)
     }
 
-    val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = BringIntoViewRequester()
 
     Template {
@@ -92,11 +103,7 @@ fun SignUp(navController: NavController) {
                 .width(
                     LocalConfiguration.current.screenWidthDp.dp - 80.dp
                 ),
-            label = { Text(text = "Mobile Number", fontWeight = FontWeight.Bold) },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Done
-            ),
+            label = { Text(text = "User name", fontWeight = FontWeight.Bold) },
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
@@ -158,14 +165,22 @@ fun SignUp(navController: NavController) {
         Spacer(modifier = Modifier.padding(20.dp))
 
         Button(
-            onClick = {navController.navigate(Screen.AddPhoneNumbers.route)},
+            onClick = {
+                if (registerResponse.value==false){
+                    viewModel.register(userName = userName.value, password = passWord.value)
+                }
+                else{
+                    navController.navigate(Screen.AddPhoneNumbers.route)
+                }
+
+            },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = DarkBlue,
                 contentColor = OrangishYellow
             ),
-            modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp/2 - 30.dp)
+            modifier = Modifier.width(if (registerResponse.value==false)LocalConfiguration.current.screenWidthDp.dp / 2 -30.dp else LocalConfiguration.current.screenWidthDp.dp / 2)
         ) {
-            Text(text = "SIGN UP", style = TextStyle(fontWeight = FontWeight.Bold))
+            Text(text = if (registerResponse.value==false)"SIGN UP" else "ADD PHONE NUMBERS", style = TextStyle(fontWeight = FontWeight.Bold))
         }
     }
 }

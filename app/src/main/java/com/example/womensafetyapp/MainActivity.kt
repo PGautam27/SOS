@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -48,18 +49,21 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             WomenSafetyAppTheme {
-                
+
                 val navController = rememberNavController();
+                fun goToAddPhones(){
+                    navController.navigate(Screen.AddPhoneNumbers.route)
+                }
                 NavHost(navController = navController, startDestination = Screen.HomeScreen.route ){
                     
                     composable(Screen.HomeScreen.route){
                         HomeScreen(navController)
                     }
                     composable(Screen.SignInScreen.route){
-                        SingIn(navController = navController, this@MainActivity,onClick = {goToHomeActivity()})
+                        SingIn(loginViewModel, this@MainActivity,onClick = {goToHomeActivity()})
                     }
                     composable(Screen.SignUpScreen.route){
-                        SignUp(navController = navController)
+                        SignUp(navController = navController,viewModel = loginViewModel,onClick={goToAddPhones()})
                     }
                     composable(Screen.AddPhoneNumbers.route){
                         AddPhoneNumberScreen(navController = navController, loginViewModel,onClick = {pickContacts()})
@@ -71,6 +75,8 @@ class MainActivity : ComponentActivity() {
 
     private fun goToHomeActivity(){
         val intent = Intent(this,HomeActivity::class.java)
+        Log.d("Login id goToHom",loginViewModel.loginResponse.value?._id.toString())
+        intent.putExtra("Login ID",loginViewModel.loginResponse.value?._id)
         startActivity(intent)
     }
 
@@ -107,6 +113,7 @@ class MainActivity : ComponentActivity() {
             )
             var cursor = contentResolver.query(contacturi,cols,null,null,null)
             if (cursor?.moveToFirst()!!){
+                Log.d("Contact add",cursor.getString(1)+cursor.getString(0))
                 val contact = Contact(cursor.getString(1),cursor.getString(0))
                 loginViewModel.addPhoneNumber(contact)
             }
