@@ -1,5 +1,6 @@
 # SimpleSoSApp
 To run the application locally, make sure to clone this repo as well the SOSserver repo from my github. 
+#### Server Repo URL : https://github.com/PGautam27/SOSServer
 
 
 ## Video
